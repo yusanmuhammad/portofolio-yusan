@@ -558,38 +558,15 @@
                 items.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
                 
                 items.forEach(data => {
-                const isVideo = data.mediaFormat === 'video';
-
-                const isYoutube = data.url.includes("youtube.com") || data.url.includes("youtu.be");
-
-                let embedUrl = data.url;
-
-                // Handle watch?v=
-                if (data.url.includes("watch?v=")) {
-                    embedUrl = data.url.replace("watch?v=", "embed/");
-                }
-
-                // Handle youtu.be
-                if (data.url.includes("youtu.be/")) {
-                    embedUrl = data.url.replace("youtu.be/", "youtube.com/embed/");
-                }
-
-                // Handle shorts
-                if (data.url.includes("/shorts/")) {
-                    embedUrl = data.url.replace("/shorts/", "/embed/");
-                }
-
-                const mediaElement = isYoutube
-                    ? `<iframe 
-                            src="${embedUrl}" 
-                            class="w-full h-full object-cover"
-                            frameborder="0"
-                            allow="autoplay; encrypted-media"
-                            allowfullscreen>
-                    </iframe>`
-                    : isVideo
-                    ? `<video src="${data.url}" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" autoplay loop muted playsinline></video>`
-                    : `<img src="${data.url}" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="${data.title}" onerror="this.src='https://via.placeholder.com/600x400?text=Karya+Studio'">`;
+                    const isVideo = data.mediaFormat === 'video';
+                    
+                    const mediaElement = isVideo 
+                        ? `<video src="${data.url}" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" autoplay loop muted playsinline></video>`
+                        : `<img src="${data.url}" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="${data.title}" onerror="this.src='https://via.placeholder.com/600x400?text=Karya+Studio'">`;
+                    
+                    const thumbnailElement = isVideo
+                        ? `<video src="${data.url}" class="w-10 h-10 rounded-lg object-cover bg-gray-200" muted></video>`
+                        : `<img src="${data.url}" class="w-10 h-10 rounded-lg object-cover bg-gray-200">`;
 
                     // Site View
                     const card = document.createElement('div');
